@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Портфолио — Dana</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0a;
+    --card-bg: #111111;
+    --border: #1f1f1f;
+    --text: #f0f0f0;
+    --text-dim: #888888;
+    --accent: #f0a0c0;
+    --accent-glow: rgba(240, 160, 192, 0.15);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 80px 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ===== HEADER ===== */
+  header {
+    margin-bottom: 80px;
+    position: relative;
+  }
+
+  .star {
+    position: absolute;
+    font-size: 24px;
+    color: var(--accent);
+    opacity: 0.7;
+    user-select: none;
+  }
+  .star-1 { top: 10px; left: 0; }
+  .star-2 { top: 10px; right: 0; }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 8vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-script {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(28px, 5vw, 52px);
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-top: -10px;
+    display: block;
+  }
+
+  .header-desc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 48px;
+    max-width: 900px;
+  }
+
+  .header-desc p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ===== GRIDS ===== */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-bottom: 100px;
+  }
+
+  /* ===== WEB CARD STYLES ===== */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+    position: relative;
+  }
+
+  /* Спокойный ховер — только подсветка рамки, без сдвигов */
+  .card:hover {
+    border-color: rgba(240, 160, 192, 0.35);
+    box-shadow: 0 0 30px var(--accent-glow);
+  }
+
+  .card-preview {
+    aspect-ratio: 16 / 10;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Никакого зума при наведении */
+  }
+
+  .card-preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+  }
+
+  .preview-label {
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    z-index: 2;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+  }
+
+  .card-body {
+    padding: 28px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .card-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: border-color 0.35s ease, color 0.35s ease;
+  }
+
+  .card:hover .tag {
+    border-color: rgba(240, 160, 192, 0.3);
+    color: var(--accent);
+  }
+
+  .arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    z-index: 3;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Стрелка меняет цвет, но НЕ крутится */
+  .card:hover .arrow {
+    background: var(--accent);
+    color: #0a0a0a;
+    border-color: var(--accent);
+  }
+
+  /* ===== POSTER CARD STYLES (для БРСМ) ===== */
+  .card-poster {
+    cursor: default;
+  }
+
+  .card-poster .card-preview {
+    /* Высокие карточки под пропорции афиши (A4 ≈ 1:1.414) */
+    aspect-ratio: 1 / 1.7;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Оверлей — затемнение сверху, текст сверху */
+  .card-poster .poster-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0.95) 0%,
+      rgba(10, 10, 10, 0.75) 35%,
+      rgba(10, 10, 10, 0.3) 65%,
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;   /* текст прижат к верху */
+    padding: 32px 24px;
+    z-index: 2;
+  }
+
+  .card-poster:hover .poster-overlay {
+    opacity: 1;
+  }
+
+  /* Без сдвигов и анимаций текста */
+  .card-poster .poster-overlay .card-title,
+  .card-poster .poster-overlay .card-desc,
+  .card-poster .poster-overlay .card-tags {
+    transform: none;
+  }
+
+ 
+
+  /* ===== EXPERIENCE SECTION ===== */
+  .experience-intro {
+    max-width: 700px;
+    margin-bottom: 40px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .experience-intro strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: 100px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+  footer a:hover { opacity: 0.7; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    body { padding: 48px 20px; }
+    .header-desc { grid-template-columns: 1fr; gap: 20px; }
+    .star { display: none; }
+    .projects { grid-template-columns: 1fr; }
+    
+    .card-poster .poster-overlay {
+      opacity: 1;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.95) 0%,
+        rgba(10, 10, 10, 0.6) 50%,
+        transparent 100%
+      );
+    }
+  }
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <span class="star star-1">✦</span>
+    <span class="star star-2">✦</span>
+
+    <div class="header-top">
+      <div>
+        <h1>PORTFOLIO</h1>
+        <span class="header-script">Digital &amp; Visual</span>
+      </div>
+    </div>
+
+    <div class="header-desc">
+      <p>Веб-дизайн, UX/UI и адаптивные интерфейсы. Мой подход — это внимание к деталям, чистая типографика и продуманные сценарии взаимодействия.</p>
+      <p>В каждом проекте я стремлюсь создать не только эстетичный, но и функциональный продукт, который решает задачи пользователя и бизнеса.</p>
+    </div>
+  </header>
+
+  <!-- ===== WEB PROJECTS ===== -->
+  <h2 class="section-title">Веб-проекты</h2>
+  <div class="projects">
+
+    <!-- 1. Сайт для фотографа -->
+    <a href="https://danaaasan.github.io/Dana-San-Photographer/" target="_blank" class="card">
+      <div class="card-preview">
+        <!-- Вставьте сюда скриншот сайта -->
+        <img src="pic/site1.png" alt="Dana San Photographer">
+        <span class="preview-label">Web / Portfolio</span>
+        <div class="arrow">↗</div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-title">Dana San — Photographer</h2>
+        <p class="card-desc">
+          Персональный сайт-портфолио фотографа. Создан с нуля: структура, визуальный стиль, адаптив под мобильные устройства и планшеты.
+        </p>
+        <div class="card-tags">
+          <span class="tag">HTML / CSS</span>
+          <span class="tag">Адаптив</span>
+          <span class="tag">Портфолио</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 2. Форма подачи обращения -->
+    <a href="https://www.figma.com/design/MxIDl7aNqGwn7ogJ7la67a/%D0%9F%D0%BE%D0%B4%D0%B0%D1%87%D0%B0-%D0%BE%D0%B1%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D1%8F?node-id=1-3&t=j5Ubwxle6qL9VMK0-1" target="_blank" class="card">
+      <div class="card-preview">
+        <!-- Вставьте сюда скриншот макета -->
+        <img src="pic/site2.png" alt="Форма подачи обращения">
+        <span class="preview-label">UX / UI</span>
+        <div class="arrow">↗</div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-title">Форма подачи обращения</h2>
+        <p class="card-desc">
+          Макет формы подачи обращения для государственного сервиса. Проработка сценария, доступности и понятной структуры шагов.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Figma</span>
+          <span class="tag">UX</span>
+          <span class="tag">Госсервис</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- 3. Tilda — гайд по метро -->
+    <a href="https://project17990546.tilda.ws" target="_blank" class="card">
+      <div class="card-preview">
+        <!-- Вставьте сюда скриншот сайта на Тильде -->
+        <img src="pic/site3.png" alt="Гайд по метро">
+        <span class="preview-label">Web / Landing</span>
+        <div class="arrow">↗</div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-title">Гайд по метро для иностранцев</h2>
+        <p class="card-desc">
+          Сайт-гайд, собранный на конструкторе Tilda. Быстрая реализация лендинга с адаптивной вёрсткой, настройкой блоков и визуальной навигацией.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Tilda</span>
+          <span class="tag">Лендинг</span>
+          <span class="tag">Гайд</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ===== EXPERIENCE & GRAPHIC DESIGN ===== -->
+  <h2 class="section-title">PR и графический дизайн</h2>
+  <div class="experience-intro">
+    <p>В течение года работала в <strong>PR-секторе БРСМ Академии управления</strong>. Занималась разработкой афиш и карточек для социальных сетей, подготовкой презентаций и монтажом видео для студенческих мероприятий. Этот опыт научил меня работать с реальными дедлайнами, фирменным стилем и быстро находить визуальные решения.</p>
+  </div>
+
+  <div class="projects">
+    <!-- 1. Волейбол -->
+    <div class="card card-poster">
+      <div class="card-preview">
+        <!-- Вставьте сюда картинку волейбола -->
+        <img src="pic/pr1.png" alt="Кубок студенческой дружбы">
+        <div class="poster-overlay">
+          <h3 class="card-title">Кубок студенческой дружбы</h3>
+          <p class="card-desc">Афиша для волейбольного студенческого турнира. Работа с фотографией, типографикой и цветом.</p>
+          <div class="card-tags">
+            <span class="tag">Графический дизайн</span>
+            <span class="tag">Афиша</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Цифровая гигиена -->
+    <div class="card card-poster">
+      <div class="card-preview">
+        <!-- Вставьте сюда картинку кибергигиены -->
+        <img src="pic/pr2.png" alt="Цифровая гигиена">
+        <div class="poster-overlay">
+          <h3 class="card-title">Цифровая гигиена</h3>
+          <p class="card-desc">Афиша для мероприятия по кибербезопасности. Стилизация под пиксельную графику и работу с неоновым свечением.</p>
+          <div class="card-tags">
+            <span class="tag">Графический дизайн</span>
+            <span class="tag">Пиксель-арт</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Students Light -->
+    <div class="card card-poster">
+      <div class="card-preview">
+        <!-- Вставьте сюда картинку Students Light -->
+        <img src="pic/pr3.png" alt="Students Light">
+        <div class="poster-overlay">
+          <h3 class="card-title">Students Light</h3>
+          <p class="card-desc">Карточка для социальных сетей с анонсом мероприятия. Демонстрация работы в мокапе смартфона.</p>
+          <div class="card-tags">
+            <span class="tag">SMM-дизайн</span>
+            <span class="tag">Мокап</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <span>© 2026 — Портфолио</span>
+    <span>Связаться: <a href="mailto:your@email.com">danakorbut5@gmail.com</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
